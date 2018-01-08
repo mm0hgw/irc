@@ -8,6 +8,8 @@ valid.url.class <- function(x, class2 = "url.class") {
     return(T)
 }
 
+#'url.class
+#'@export
 url.class <- function(x, ...) {
     UseMethod("url.class", x)
 }
@@ -15,15 +17,14 @@ url.class <- function(x, ...) {
 RFC3986Regex <- "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"
 urlElems <- c("\\2", "\\4", "\\5", "\\7", "\\9")
 
+#'@method url.class default
 url.class.default <- function(x, ...) {
     if (length(x) == 1) {
         x <- sapply(urlElems, gsub, pattern = RFC3986Regex, x = x)
     }
-    class(x) <- "url.class"
-    if (valid(x) != TRUE) 
+    if (valid.url.class(x) != TRUE) 
         stop()
+    class(x) <- "url.class"
     names(x) <- c("service", "authority", "path", "query", "fragment")
     x
 }
-
-url.class("http://www.ics.uci.edu/pub/ietf/uri/#Related")
