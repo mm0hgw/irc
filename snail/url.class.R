@@ -45,3 +45,4 @@ format.url.class <- function(x, ...) {
 print.url.class <- function(x, ...) {
     cat(format(x, ...), "\n")
 }
+
