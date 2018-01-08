@@ -9,7 +9,6 @@ getToP <- function(TableOfProjectsFile = ToPs[2]) {
     readRDS(file = TableOfProjectsFile)
 }
 
-
 doProject <- function(ToP, ProjectName = ProjectNames[2]) {
     # make ProjectName a parameter
     if (typeof(ProjectName) != "character") {
