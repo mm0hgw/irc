@@ -28,3 +28,17 @@ url.class.default <- function(x, ...) {
     names(x) <- c("service", "authority", "path", "query", "fragment")
     x
 }
+
+#'@method format url.class
+format.url.class <- function(x,...){
+	out <- paste(collapse='',x[c(2,3)])
+	if(x[1]!='') out <- paste(sep='://',x[1],out)
+	if(x[4]!='') out <- paste(sep='?',out,x[4])
+	if(x[5]!='') out <- paste(sep='#',out,x[5])
+	out
+}
+
+#'@method print url.class
+print.url.class <- function(x,...){
+cat(format(x,...),'\n')
+}
