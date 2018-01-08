@@ -1,11 +1,6 @@
 # cleanup
 closeAllConnections()
 
-# Projects
-ToPs <- c("rest_TableOfProjects.Rda", "failmefilename.Rda")
-
-
-
 getToP <- function(TableOfProjectsFile = ToPs[2]) {
     if (length(TableOfProjectsFile) != 1 || typeof(TableOfProjectsFile) != "character" || 
         !file.exists(TableOfProjectsFile)) {
@@ -14,7 +9,6 @@ getToP <- function(TableOfProjectsFile = ToPs[2]) {
     readRDS(file = TableOfProjectsFile)
 }
 
-ProjectNames <- c("DevRunTest", "sdhsdsddssd", "AllCityCapture")
 
 doProject <- function(ToP, ProjectName = ProjectNames[2]) {
     # make ProjectName a parameter
@@ -30,8 +24,22 @@ doProject <- function(ToP, ProjectName = ProjectNames[2]) {
     # checks done, thing is doable
 }
 
-lapply(ToPs, function(ToP) {
-    lapply(ProjectNames, function(ProjectName) {
-        doProject(Top, ProjectName)
-    })
-})
+# Projects
+ToPs <- c("rest_TableOfProjects.Rda", "failmefilename.Rda")
+ProjectNames <- c("DevRunTest", "sdhsdsddssd", "AllCityCapture")
+
+if(!requireNamespace('ultraCounter')){
+	library(devtools)
+	devtools::install_github('mm0hgw/R',subdir='ultraCounter')
+}
+library(ultraCounter)
+
+projectCounter <- ultraCounter(ToPs, ProjectNames)
+i <- 1
+out <- list()
+while( i <= length(projectCounter)){
+	args <- projectCounter$index(i)
+	append(out,try(do.call(doProject,args)))
+	names(out)[i] <- paste(collapse='.',args)
+	i<-i+1
+}
